@@ -1,0 +1,25 @@
+{
+  "name": "experiments-server",
+  "version": "1.0.0",
+  "description": "experiments-server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gali1998/experiments-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gali1998/experiments-server/issues"
+  },
+  "homepage": "https://github.com/gali1998/experiments-server#readme",
+  "dependencies": {
+    "exceljs": "^4.2.0",
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
+}
