@@ -7,6 +7,7 @@ const Excel = require('exceljs');
 
 app.get('/', (req, res) => {
 
+  //console.log(path.dirname());
   var workbook = new Excel.Workbook();
   var worksheet = workbook.addWorksheet('My Sheet');
   worksheet.columns = [
