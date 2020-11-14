@@ -1,6 +1,11 @@
 import fs from 'fs';
 
 export default class fileSystemService{
+
+    static createFile(filePath, data){
+        fs.writeFileSync(filePath,data);
+    }
+
     static createExperimentFolderIfDoesNotExist(basePath, experimenterName, experimentName){
         this.createFolderIfDoesNotExist(basePath, experimenterName);
         
@@ -14,5 +19,17 @@ export default class fileSystemService{
         if(!fs.existsSync(newFolder)){
             fs.mkdirSync(newFolder);
         }
+    }
+
+    static createExperimentPath(basePath, experimenterName, experimentName, participantId){
+        return basePath + experimenterName + "/" + experimentName + "/"+participantId + ".json";
+    }
+
+    static doesFileExist(filePath){
+        if (fs.existsSync(filePath)){
+            return true;
+        }
+
+        return false;
     }
 }

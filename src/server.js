@@ -2,6 +2,7 @@ import express from 'express';
 import requestValidator from './requestValidaror';
 import fileSystemService from './fileSystemService';
 import bodyParser from 'body-parser';
+import jsonCreatorService from './jsonCreatorService';
 
 const app = express();
 
@@ -25,6 +26,20 @@ app.post('/', (req, res) => {
     let experimenterName = req.body.data.experiment_info.experimenter_name;
     let experimentName = req.body.data.experiment_info.experiment_name;
     fileSystemService.createExperimentFolderIfDoesNotExist(basePath, experimenterName, experimentName);
+
+    let participantId = req.body.data.participant_info.participant_id;
+    let filePath = fileSystemService.createExperimentPath(basePath, experimenterName, experimentName, participantId);
+
+    if (fileSystemService.doesFileExist(filePath)){
+        let message = "Participant ID already exists, participantId: " + participantId;
+        return res.status(400).send({message});        
+    }
+
+    let jsonToSave = req.body.data;
+
+    jsonCreatorService.removeExperimentInfo(jsonToSave);
+
+    fileSystemService.createFile(filePath, JSON.stringify(jsonToSave));
 
     res.status(200).send();
 });
