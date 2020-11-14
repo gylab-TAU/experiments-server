@@ -11,16 +11,11 @@ app.use(bodyParser.json());
 const basePath = "C:/Users/Ron/Desktop/work/dbDirectory/";
 
 app.post('/', (req, res) => {
-    if (!requestValidator.canCreateFile(req.body)){
-        return res.status(400).send({message: "Missing critical info about the participant or experimenter"});
-    }
 
-    if (!requestValidator.doesDataExist(req.body)){
-        return res.status(400).send({message: "Missing experiment data. Either trials data or headers is missing."});
-    } 
+    if (!requestValidator.isRequestValid(req)){
+        let err = requestValidator.getValidationErrorMessage(req);
 
-    if (!requestValidator.doTrialsMatchHeader(req.body)){
-        return res.status(400).send({message: "Trial keys don't match the headers."});
+        return res.status(400).send({message: err});
     }
 
     let experimenterName = req.body.data.experiment_info.experimenter_name;
