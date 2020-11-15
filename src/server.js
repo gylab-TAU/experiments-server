@@ -2,6 +2,7 @@ import express from 'express';
 import requestValidator from './requestValidaror';
 import fileSystemService from './fileSystemService';
 import bodyParser from 'body-parser';
+import JsonToExcelService  from './JsonToExcelService';
 
 const app = express();
 
@@ -39,13 +40,28 @@ app.get('/getParticipantTrials/:experimenterName/:experimentName/:participantId'
 
     try {
         let participantJson = fileSystemService.getParticipantJsonFromDirectory(basePath, experimenterName, experimentName, participantId);
-        console.log(participantJson.trials);
-
+        
         res.status(200).send(participantJson.trials);
     } 
     catch(err) {
         res.status(400).send(err);
     }
+});
+
+app.get('/downloadExcelOfParticipant/:experimenterName/:experimentName/:participantId', (req, res)=>{
+    let experimenterName = req.params.experimenterName;
+    let experimentName = req.params.experimentName;
+    let participantId = req.params.participantId;
+
+    if (!experimentName || !experimenterName || !participantId){
+        res.status(400).send("downloadExcelOfParticipant: did not get all parameters. Make sure you sent experimenter name, experiment name and participant id");
+    }
+
+    let data = JsonToExcelService.getExcelObjectOfOneParticipant(basePath, experimenterName, experimentName, participantId);
+
+    console.log(data);
+
+    res.status(200).send();
 });
 
 app.get('/isAlive', (req, res) => {
