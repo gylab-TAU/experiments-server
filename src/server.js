@@ -2,7 +2,6 @@ import express from 'express';
 import requestValidator from './requestValidaror';
 import fileSystemService from './fileSystemService';
 import bodyParser from 'body-parser';
-import jsonCreatorService from './jsonCreatorService';
 
 const app = express();
 
@@ -18,25 +17,35 @@ app.post('/', (req, res) => {
         return res.status(400).send({message: err});
     }
 
-    let experimenterName = req.body.data.experiment_info.experimenter_name;
-    let experimentName = req.body.data.experiment_info.experiment_name;
-    fileSystemService.createExperimentFolderIfDoesNotExist(basePath, experimenterName, experimentName);
+    
+    try {
+        fileSystemService.getJsonFromRequestAndInsertToDIrectory(req, basePath);
 
-    let participantId = req.body.data.participant_info.participant_id;
-    let filePath = fileSystemService.createExperimentPath(basePath, experimenterName, experimentName, participantId);
+        res.status(200).send();
+    }
+    catch(err){
+        res.status(400).send(err);
+    }
+});
 
-    if (fileSystemService.doesFileExist(filePath)){
-        let message = "Participant ID already exists, participantId: " + participantId;
-        return res.status(400).send({message});        
+app.get('/getParticipantTrials/:experimenterName/:experimentName/:participantId', (req, res)=>{
+    let experimenterName = req.params.experimenterName;
+    let experimentName = req.params.experimentName;
+    let participantId = req.params.participantId;
+
+    if (!experimentName || !experimenterName || !participantId){
+        res.status(400).send("getParticipantTrials: did not get all parameters. Make sure you sent experimenter name, experiment name and participant id");
     }
 
-    let jsonToSave = req.body.data;
+    try {
+        let participantJson = fileSystemService.getParticipantJsonFromDirectory(basePath, experimenterName, experimentName, participantId);
+        console.log(participantJson.trials);
 
-    jsonCreatorService.removeExperimentInfo(jsonToSave);
-
-    fileSystemService.createFile(filePath, JSON.stringify(jsonToSave));
-
-    res.status(200).send();
+        res.status(200).send(participantJson.trials);
+    } 
+    catch(err) {
+        res.status(400).send(err);
+    }
 });
 
 app.get('/isAlive', (req, res) => {
