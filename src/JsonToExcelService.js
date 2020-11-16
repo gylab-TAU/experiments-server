@@ -1,4 +1,5 @@
 import fileSystemService from './fileSystemService';
+import moment from 'moment';
 
 export default class JsonToExcelService {
     static getExcelObjectOfOneParticipant(basePath, experimenterName, experimentName, participantId){
@@ -43,7 +44,8 @@ export default class JsonToExcelService {
         });
 
         if (time){
-            line.push(time);
+            let formattedTime = moment(time).format('MM/DD/YYYY, HH:mm:ss');
+            line.push(formattedTime);
         }
 
         return line;
@@ -56,15 +58,18 @@ export default class JsonToExcelService {
         let result = [];
 
         headers.forEach(element => {
-            result.push(element);
+            let headerItem = {"header": element, key: element, width: 20};
+            result.push(headerItem);
         });
 
         participantInfo.forEach(element => {
-            result.push(element);
+            let headerItem = {"header": element, key: element, width: 20};
+            result.push(headerItem);
         });
 
         if (participantJson.time){
-            result.push("time");
+            let headerItem = {"header": "time", key: "time", width: 40};
+            result.push(headerItem);
         }
 
         return result;
