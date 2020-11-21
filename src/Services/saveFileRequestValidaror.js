@@ -1,4 +1,4 @@
-export default class requestValidator{
+export default class saveFileRequestValidaror{
 
     static isRequestValid(req){
         return this.canCreateFile(req.body) && this.doesDataExist(req.body) && this.doTrialsMatchHeader(req.body);
