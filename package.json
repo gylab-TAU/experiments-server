@@ -21,8 +21,6 @@
   "homepage": "https://github.com/gali1998/experiments-server#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "exceljs": "^4.2.0",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "nodemon": "^2.0.6",

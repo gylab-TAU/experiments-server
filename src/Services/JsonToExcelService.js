@@ -1,4 +1,4 @@
-import JsonCreator from './FileCreators/JsonCreator'
+import JsonCreator from '../FileCreators/JsonCreator'
 import moment from 'moment';
 
 export default class JsonToExcelService {
@@ -28,9 +28,9 @@ export default class JsonToExcelService {
             }
     }
 
-    static getExcelObjectOfOneParticipantFromRequest(basePath, req) {
+    static getExcelObjectOfOneParticipantFromFilePath(filePath) {
         try {
-            let participantJson = JsonCreator.getJsonFromRequest(req, basePath);
+            let participantJson = JsonCreator.getJsonFromFilePath(filePath);
 
             return this.createExcelObjectFromParticipantJson(participantJson);
         }
