@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d dist",
     "start": "npm run build && node dist/server.js",
-    "start-prod": "pm2 start node dist/server.js",
+    "start-prod": "pm2 start node dist/server.js experiments-server",
     "restart": "rimraf dist && npm run start",
     "dev": "nodemon --exec npm run restart"
   },
@@ -25,6 +25,7 @@
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "nodemon": "^2.0.6",
+    "pm2": "^4.5.0",
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
