@@ -92,7 +92,7 @@ app.get('/getAllExperimenters', (req, res) => {
 
         return res.status(200).send(experimenters);
     } catch (err){
-        return res.status.send(err);
+        return res.status(500).send(err);
     }
 });
 
