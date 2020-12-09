@@ -11,7 +11,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const basePath = "/home/gali/Desktop/db";
+const basePath = "/home/gali/Desktop/db/";
 
 app.post('/', (req, res) => {
 
