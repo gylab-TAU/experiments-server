@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "build": "babel src -d dist",
-    "start": "npm run build && node dist/server.js",
-    "start-prod": "pm2 start node dist/server.js --name experiments-server",
+    "start": "npm run build && node dist/server.js prod",
+    "start-test": "npm run build && node dist/server.js test",
+    "start-prod": "pm2 start node dist/server.js --name experiments-server prod",
+    "start-test-environment": "pm2 start node dist/server.js --name experiments-server test",
     "restart": "rimraf dist && npm run start",
     "dev": "nodemon --exec npm run restart"
   },
@@ -25,13 +27,12 @@
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "pm2": "^4.5.0"
-
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
     "@babel/preset-env": "7.12.1",
-    "rimraf": "^3.0.2",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "rimraf": "^3.0.2"
   }
 }

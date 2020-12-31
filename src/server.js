@@ -11,7 +11,16 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const basePath = "/home/gali/Desktop/db/";
+// example of linux directory:
+//const basePath = "/home/gali/Desktop/db/";
+
+var basePath;
+
+if (process.argv[process.argv.length - 1] == "prod"){
+    basePath = "C:/Users/gali1/OneDrive/Documents/Work/db/";
+} else{
+    basePath = "C:/Users/gali1/OneDrive/Documents/Work/test-db/";
+}
 
 app.post('/', (req, res) => {
 
