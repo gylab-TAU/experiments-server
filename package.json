@@ -7,8 +7,6 @@
     "build": "babel src -d dist",
     "start": "npm run build && node dist/server.js prod",
     "start-test": "npm run build && node dist/server.js test",
-    "start-prod": "pm2 start node dist/server.js --name experiments-server prod",
-    "start-test-environment": "pm2 start node dist/server.js --name experiments-server test",
     "restart": "rimraf dist && npm run start",
     "dev": "nodemon --exec npm run restart"
   },
@@ -24,6 +22,7 @@
   "homepage": "https://github.com/gali1998/experiments-server#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "pm2": "^4.5.0"

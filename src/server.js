@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import saveFileRequestValidaror from './Services/saveFileRequestValidaror';
 import JsonCreator from './FileCreators/JsonCreator';
@@ -10,6 +11,7 @@ import fileSystemService from './Services/fileSystemService';
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 // example of linux directory:
 //const basePath = "/home/gali/Desktop/db/";
