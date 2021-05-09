@@ -17,11 +17,14 @@ app.use(cors());
 //const basePath = "/home/gali/Desktop/db/";
 
 var basePath;
+var port;
 
 if (process.argv[process.argv.length - 1] == "prod"){
     basePath = "C:/Users/gali1/OneDrive/Documents/Work/db/";
+    port = 8000;
 } else{
     basePath = "C:/Users/gali1/OneDrive/Documents/Work/test-db/";
+    port = 8001;
 }
 
 app.post('/', (req, res) => {
@@ -155,6 +158,6 @@ app.get('/isAlive', (req, res) => {
    return res.status(200).send({ message: "Ani Sheled" });
 });
 
-app.listen(8000, () => {
-    console.log("server started on port 8000");
+app.listen(port, () => {
+    console.log("server started on port " + port);
 });
