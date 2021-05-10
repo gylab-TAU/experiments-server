@@ -19,7 +19,7 @@ app.use(cors());
 var basePath;
 var port;
 
-if (process.argv[process.argv.length - 1] == "prod"){
+if (process.env.NODE_ENV == "prod"){
     basePath = "C:/Users/gali1/OneDrive/Documents/Work/db/";
     port = 8000;
 } else{
