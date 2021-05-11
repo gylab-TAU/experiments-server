@@ -19,11 +19,11 @@ app.use(cors());
 var basePath;
 var port;
 
-if (process.env.NODE_ENV == "prod"){
-    basePath = "C:/Users/gali1/OneDrive/Documents/Work/db/";
+if (process.env.NODE_ENV == "production"){
+    basePath = "/home/gali/db-prod/";
     port = 8000;
 } else{
-    basePath = "C:/Users/gali1/OneDrive/Documents/Work/test-db/";
+    basePath = "/home/gali/db-tests/";
     port = 8001;
 }
 
