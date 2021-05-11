@@ -16,8 +16,8 @@ app.use(cors());
 // example of linux directory:
 //const basePath = "/home/gali/Desktop/db/";
 
-var basePath = process.argv[1];;
-var port = process.argv[0] || 8080;
+var basePath = process.argv[3];
+var port = process.argv[2] || 8080;
 
 app.post('/', (req, res) => {
 
