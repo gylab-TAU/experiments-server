@@ -24,7 +24,7 @@ if (process.env.NODE_ENV == "production"){
     port = 8000;
 } else{
     basePath = "/home/gali/db-tests/";
-    port = 8001;
+    port = 8080;
 }
 
 app.post('/', (req, res) => {
