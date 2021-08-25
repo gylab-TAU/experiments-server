@@ -1,7 +1,8 @@
 export default class saveFileRequestValidaror{
 
     static isRequestValid(req){
-        return this.canCreateFile(req.body) && this.doesDataExist(req.body) && this.doTrialsMatchHeader(req.body);
+        //return this.canCreateFile(req.body) && this.doesDataExist(req.body) && this.doTrialsMatchHeader(req.body);
+        return this.canCreateFile(req.body) && this.doesDataExist(req.body);
     }
 
     static getValidationErrorMessage(req){
@@ -13,9 +14,9 @@ export default class saveFileRequestValidaror{
             return "Missing experiment data. Either trials data or headers is missing.";
         }
 
-        if (!this.doTrialsMatchHeader(req.body)){
-            return "Trial keys don't match the headers.";
-        }
+        // if (!this.doTrialsMatchHeader(req.body)){
+        //     return "Trial keys don't match the headers.";
+        // }
     }
 
     static canCreateFile(reqBody){
