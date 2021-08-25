@@ -24,7 +24,7 @@ app.post('/', (req, res) => {
     if (!saveFileRequestValidaror.isRequestValid(req)) {
         let err = saveFileRequestValidaror.getValidationErrorMessage(req);
 
-        return res.status(400).send({ message: err });
+        return res.status(400).send({ message: "invalid" });
     }
 
 
