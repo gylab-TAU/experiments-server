@@ -20,6 +20,7 @@ let  basePath = "/db/";
 let port = 1337;
 
 app.post('/', (req, res) => {
+    console.log("reached saving function")
 
     if (!saveFileRequestValidaror.isRequestValid(req)) {
         let err = saveFileRequestValidaror.getValidationErrorMessage(req);
