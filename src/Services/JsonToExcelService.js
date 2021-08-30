@@ -76,8 +76,7 @@ export default class JsonToExcelService {
         });
 
         if (time) {
-            let intTime = parseInt(time);
-            let formattedTime = moment(intTime, "YYYY-MM-DD-HH-mm-ss").format('MM/DD/YYYY, HH:mm:ss');
+            let formattedTime = moment(time, "YYYY-MM-DD-HH-mm-ss").format('MM/DD/YYYY, HH:mm:ss');
             line.push(formattedTime);
         }
 
