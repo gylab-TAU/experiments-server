@@ -138,9 +138,9 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
             }
 
             experiments.push(experiment);
-
-            return res.status(200).send(experiments);
         });
+
+        return res.status(200).send(experiments);
     } catch (err){
         return res.status(500).send(err);
     }
