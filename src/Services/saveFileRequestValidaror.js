@@ -13,10 +13,6 @@ export default class saveFileRequestValidaror{
         if (!this.doesDataExist(req.body)){
             return "Missing experiment data. Either trials data or headers is missing.";
         }
-
-        // if (!this.doTrialsMatchHeader(req.body)){
-        //     return "Trial keys don't match the headers.";
-        // }
     }
 
     static canCreateFile(reqBody){
@@ -30,32 +26,5 @@ export default class saveFileRequestValidaror{
 
     static doesDataExist(reqBody){
         return reqBody.data.headers && reqBody.data.trials;
-    }
-
-    static doTrialsMatchHeader(reqBody){
-        let headers = reqBody.data.headers;
-        let trials = reqBody.data.trials;
-
-        if (trials.length == 0){
-            return;
-        }
-
-        let isValid = true;
-
-        trials.forEach(trial => {
-            let trialKeys = Object.keys(trial);
-            
-            if (headers.length != trialKeys.length){
-                isValid =  false;
-            }
-
-            for(let i = 0; i < headers.length; i++){
-                if (headers[i] != trialKeys[i]){
-                    isValid = false;
-                }
-            }
-        });
-
-        return isValid;
     }
 }

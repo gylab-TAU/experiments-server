@@ -1,5 +1,6 @@
 import fileSystemService from '../Services/fileSystemService';
 
+
 export default class JsonCreator{
     static getJsonFromRequest(req, basePath){
         let filePath = this.createFilePath(basePath, req.params.experimenterName, req.params.experimentName, req.params.participantId);
@@ -15,6 +16,22 @@ export default class JsonCreator{
         return json;
     }
 
+    static addParticipantToDuplicates(req, basePath) {
+        let experimenterName = req.body.data.experiment_info.experimenter_name;
+        let experimentName = req.body.data.experiment_info.experiment_name;
+        this.createDuplicatesFolder(basePath, experimenterName, experimentName );
+        
+        let date = new Date(Date.now());
+        let participantId = req.body.data.participant_info.participant_id + "_" + date.toLocaleDateString();
+        let filePath = this.createFilePath(basePath, experimenterName, experimentName + "/Duplicates", participantId);
+
+        let jsonToSave = req.body.data;
+
+        this.removeExperimentInfo(jsonToSave);
+
+        fileSystemService.createFile(filePath, JSON.stringify(jsonToSave));
+    }
+
     static saveParticipantJsonFromRequestToDirectory(req, basePath){
         let experimenterName = req.body.data.experiment_info.experimenter_name;
         let experimentName = req.body.data.experiment_info.experiment_name;
@@ -24,8 +41,7 @@ export default class JsonCreator{
         let filePath = this.createFilePath(basePath, experimenterName, experimentName, participantId);
 
         if (fileSystemService.doesFileExist(filePath)) {
-            let message = "Participant ID already exists, participantId: " + participantId;
-            throw message;
+            this.addParticipantToDuplicates(req, basePath);
         }
 
         let jsonToSave = req.body.data;
@@ -44,9 +60,16 @@ export default class JsonCreator{
         return basePath + experimenterName + "/" + experimentName + "/" + participantId + ".json";
     }
 
-    static createExperimentFolderIfDoesNotExist(basePath, experimenterName, experimentName) {
-        fileSystemService.createFolderIfDoesNotExist(basePath, experimenterName);
+    static createDuplicatesFolder(basePath, experimenterName, experimentName) {
+        let newBasePath = basePath + experimenterName + "/" + experimentName + "/";
 
+        fileSystemService.createFolderIfDoesNotExist(newBasePath, "Duplicates");
+    }
+
+    static createExperimentFolderIfDoesNotExist(basePath, experimenterName, experimentName) {
+        
+        fileSystemService.createFolderIfDoesNotExist(basePath, experimenterName);
+        
         let newBasePath = basePath + experimenterName + "/";
 
         fileSystemService.createFolderIfDoesNotExist(newBasePath, experimentName);
