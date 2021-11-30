@@ -8,6 +8,8 @@ import JsonToExcelService from './Services/JsonToExcelService';
 import requestValidator from './Services/requestValidator';
 import fileSystemService from './Services/fileSystemService';
 
+import logger from './logger';
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -16,12 +18,15 @@ app.use(cors());
 // example of linux directory:
 //const basePath = "/home/gali/Desktop/db/";
 
-let  basePath = "/db/";
+//let basePath = "/db/";
+let basePath = "C:/Users/User/Desktop/db/"
 let port = 1337;
 
 app.post('/', (req, res) => {
-
+    let logs = new logger(req);
+    logs.logInfo("Save new file", "started saving new file");
     if (!saveFileRequestValidaror.isRequestValid(req)) {
+        logs.logError("Save new file", "Failed at request validation");
         let err = saveFileRequestValidaror.getValidationErrorMessage(req);
 
         return res.status(400).send({ message: err });
@@ -29,11 +34,13 @@ app.post('/', (req, res) => {
 
 
     try {
+        logs.logInfo("Save new file", "creating json");
         JsonCreator.saveParticipantJsonFromRequestToDirectory(req, basePath);
-
+        logs.logSuccess("Save new file", "");
         return res.status(200).send();
     }
     catch (err) {
+        logs.logError("Save new file", err);
         return res.status(500).send(err);
     }
 });
@@ -97,7 +104,7 @@ app.get('/getAllExperimenters', (req, res) => {
         let experimenters = fileSystemService.getFilesFromFolder(basePath);
 
         return res.status(200).send(experimenters);
-    } catch (err){
+    } catch (err) {
         return res.status(500).send(err);
     }
 });
@@ -147,7 +154,7 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
 });
 
 app.get('/isAlive', (req, res) => {
-   return res.status(200).send({ message: "Ani Sheled" });
+    return res.status(200).send({ message: "Ani Sheled" });
 });
 
 app.listen(port, () => {
