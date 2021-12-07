@@ -3,7 +3,7 @@ import fileSystemService from './Services/fileSystemService';
 import { stringify } from 'flatted';
 export default class logger {
     constructor(req) {
-        this.path = "/nutella-logs.json";
+        this.path = "/home/gali/nutella-logs.json";
         this.experimenterName = req.body.data.experiment_info.experimenter_name;
         this.experimentName = req.body.data.experiment_info.experiment_name;
         this.participantId = req.body.data.participant_info.participant_id;

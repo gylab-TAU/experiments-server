@@ -68,8 +68,8 @@ export default class fileSystemService{
     }
 
     static shouldDeleteLog(log) {
-        let date = moment(log.date);
-        
+        let date = moment(log.date, "dddd, MMMM Do YYYY, h:mm:ss a");
+    
         return moment().diff(date, 'months') > 1;
     }
 }
