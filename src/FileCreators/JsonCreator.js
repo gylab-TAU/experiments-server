@@ -21,9 +21,9 @@ export default class JsonCreator{
         let experimentName = req.body.data.experiment_info.experiment_name;
         this.createDuplicatesFolder(basePath, experimenterName, experimentName );
 
-        let date = new Date(Date.now()).toLocaleDateString().replaceAll("/", "-");
+        let date = new Date(Date.now());
         
-        let participantId = req.body.data.participant_info.participant_id + "_" + date;
+        let participantId = req.body.data.participant_info.participant_id + "_" + date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + "-" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
         
         let filePath = this.createFilePath(basePath, experimenterName, experimentName + "/Duplicates", participantId);
 
