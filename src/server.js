@@ -128,7 +128,9 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
         experimentNames.forEach(experimentName => {
             let folderPath = experimenterFolder + "/" + experimentName;
             let participantFiles = fileSystemService.getFilesFromFolder(folderPath);
-
+            let duplicatesPath = folderPath + "/Duplicates";
+            let duplicates = participantFiles.includes("Duplicates") ? fileSystemService.getFilesFromFolder(duplicatesPath) : null;
+            participantFiles = participantFiles.filter((item) => item !== "Duplicates");
             let participantIds = [];
 
             participantFiles.forEach(file => {
@@ -141,7 +143,8 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
 
             let experiment = {
                 name: experimentName,
-                participants: participantIds
+                participants: participantIds,
+                duplicates: duplicates
             }
 
             experiments.push(experiment);
