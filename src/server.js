@@ -69,7 +69,17 @@ app.post("/getParticipsntsDataForExcel/:experimenterName/:experimentName", (req,
 
         req.body.participant_ids.forEach(participantId => {
             let filePath = JsonCreator.createFilePath(basePath, req.params.experimenterName, req.params.experimentName, participantId);
-            let participantExcelData = JsonToExcelService.getExcelObjectOfOneParticipantFromFilePath(filePath);
+            let duplicateFilePath = JsonCreator.createFilePath(basePath, req.params.experimenterName, req.params.experimentName + "/Duplicates", participantId)
+
+            let participantExcelData = null;
+
+            if (fileSystemService.doesFileExist(filePath)) {
+                participantExcelData = JsonToExcelService.getExcelObjectOfOneParticipantFromFilePath(filePath);
+            } else if (fileSystemService.doesFileExist(duplicateFilePath)) {
+                participantExcelData = JsonToExcelService.getExcelObjectOfOneParticipantFromFilePath(duplicateFilePath);
+            } else {
+                throw new Error("File does not exist, participant id = " + participantId)
+            }
 
             let excelObject = {
                 participant_id: participantId,
@@ -129,9 +139,11 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
             let folderPath = experimenterFolder + "/" + experimentName;
             let participantFiles = fileSystemService.getFilesFromFolder(folderPath);
             let duplicatesPath = folderPath + "/Duplicates";
-            let duplicates = participantFiles.includes("Duplicates") ? fileSystemService.getFilesFromFolder(duplicatesPath) : null;
-            participantFiles = participantFiles.filter((item) => item !== "Duplicates");
+            let duplicatesFiles = participantFiles.includes("Duplicates") ? fileSystemService.getFilesFromFolder(duplicatesPath) : null;
+            participantFiles = participantFiles.filter(item => item !== "Duplicates")
+
             let participantIds = [];
+            let duplicates = [];
 
             participantFiles.forEach(file => {
                 let splitFileName = file.split(".");
@@ -140,6 +152,18 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
 
                 participantIds.push(participantId);
             });
+
+            if (duplicatesFiles !== null) {
+                duplicatesFiles = duplicatesFiles.filter((item) => item !== "Duplicates");
+
+                duplicatesFiles.forEach(file => {
+                    let splitFileName = file.split(".");
+                    splitFileName.pop();
+                    let participantId = splitFileName.join(".");
+
+                    duplicates.push(participantId);
+                });
+            }
 
             let experiment = {
                 name: experimentName,
@@ -151,7 +175,7 @@ app.get('/getExperimenterFolder/:experimenterName', (req, res) => {
         });
 
         return res.status(200).send(experiments);
-    } catch (err){
+    } catch (err) {
         return res.status(500).send(err);
     }
 });
