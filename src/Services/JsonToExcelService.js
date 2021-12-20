@@ -1,5 +1,6 @@
 import JsonCreator from '../FileCreators/JsonCreator'
 import moment from 'moment';
+import fileSystemService from './fileSystemService';
 
 export default class JsonToExcelService {
     static getMergedExcelObjectOfManyParticipants(basePath, experimenterName, experimentName, participantIds) {
@@ -7,9 +8,16 @@ export default class JsonToExcelService {
         let lines = [];
             participantIds.forEach(participant => {
                 let filePath = JsonCreator.createFilePath(basePath, experimenterName, experimentName, participant);
-                try {
-                    let participantJson = JsonCreator.getJsonFromFilePath(filePath);
+                let duplicatesPath = JsonCreator.createFilePath(basePath, experimenterName, experimentName +  "/Duplicates", participant);
 
+                try {
+                    let participantJson = null;
+                    if (fileSystemService.doesFileExist(filePath)) {
+                        participantJson = JsonCreator.getJsonFromFilePath(filePath);
+                    } else {
+                        participantJson = JsonCreator.getJsonFromFilePath(duplicatesPath);
+                    }
+                     
                     let excelObject = this.createExcelObjectFromParticipantJson(participantJson);
 
                     if (headers.length < 1){
